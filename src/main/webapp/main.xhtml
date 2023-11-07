@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Main Page</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <div class="header">
+            <h1>student: starikova daria</h1>
+            <h2>group: p3231</h2>
+            <h2>var: 82367273</h2>
+        </div>
+
+        <div class="graph">
+            <canvas id="graphic" width="420px" height="420px"/>
+        </div>
+
+        <h:form styleClass="form" id="form">
+            <div class="x-select">
+                <h:outputLabel for="x">select x</h:outputLabel>
+                <h:selectOneRadio id="x" value="#{point.x}" layout="pageDirection">
+                    <f:selectItem itemValue="-3" itemLabel="-3"/>
+                    <f:selectItem itemValue="-2" itemLabel="-2"/>
+                    <f:selectItem itemValue="-1" itemLabel="-1"/>
+                    <f:selectItem itemValue="0" itemLabel="0"/>
+                    <f:selectItem itemValue="1" itemLabel="1"/>
+                    <f:selectItem itemValue="2" itemLabel="2"/>
+                    <f:selectItem itemValue="3" itemLabel="3"/>
+                    <f:selectItem itemValue="4" itemLabel="4"/>
+                    <f:selectItem itemValue="5" itemLabel="5"/>
+                    <f:validateRequired/>
+                </h:selectOneRadio>>
+            </div>
+
+            <div class="y-text">
+                <h:outputLabel for="y">enter y</h:outputLabel> <br/>
+                <h:inputText id="y" value="#{point.y}" maxlength="12"
+                             validatorMessage="y should be a number between -5 and 3" styleClass="y">
+                    <f:validateDoubleRange minimum="-3" maximum="3"/>
+                    <f:validateRequired/>
+                    <f:ajax event="keyup" render="y-warning" execute="y"/>
+                </h:inputText>
+                <p><h:message id="y-warning" styleClass="warning" for="y"/></p>
+            </div>
+
+            <div class="r-select">
+                <h:outputLabel for="r">select r</h:outputLabel> <br/>
+                <p:inputText type='hidden' value="#{point.r}" name='r' id='r'/>
+
+                <div id="r-links">
+                    <h:commandLink value="1" id="rlink1">
+                        <f:ajax event="click" onevent="changeR(this, 1)"/>
+                    </h:commandLink> <br/>
+                    <h:commandLink value="1.5" id="rlink2">
+                        <f:ajax event="click" onevent="changeR(this, 1.5)"/>
+                    </h:commandLink> <br/>
+                    <h:commandLink value="2" id="rlink3">
+                        <f:ajax event="click" onevent="changeR(this, 2)"/>
+                    </h:commandLink> <br/>
+                    <h:commandLink value="2.5" id="rlink4">
+                        <f:ajax event="click" onevent="changeR(this, 2.5)"/>
+                    </h:commandLink> <br/>
+                    <h:commandLink value="3" id="rlink5">
+                        <f:ajax event="click" onevent="changeR(this, 3)"/>
+                    </h:commandLink> <br/>
+                </div>
+                <p><h:message id="r-warning" styleClass="warning" for="r"/></p>
+            </div>
+
+            <div class="button-wrap" id="submit-wrap">
+                <h:commandButton id="submit-button" value="check" action="#{point.check}" styleClass="button">
+                    <f:ajax execute="@form" render="results-table" onevent="addDot()"/>
+                </h:commandButton>
+            </div>
+
+            <div class="button-wrap" id="clear-wrap">
+                <h:commandButton id="clear-button" value="clear" action="#{table.clear}" styleClass="button">
+                    <f:ajax render="results-table" onevent="clearDots()"/>
+                </h:commandButton>
+            </div>
+
+            <p:remoteCommand name="setTimezone" action="#{timezoner.setTimezone}"/>
+            <p:remoteCommand name="addPoint" action="#{table.addPoint}"/>
+        </h:form>
+
+        <div class="results-holder">
+            <h:dataTable value="#{table.getResults()}" var="row" styleClass="results" headerClass="res-header"
+                         rowClasses="res-row" id="results-table">
+                <h:column>
+                    <f:facet name="header">x</f:facet>
+                    <h:outputText value="#{row.x}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">y</f:facet>
+                    <h:outputText value="#{row.y}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">r</f:facet>
+                    <h:outputText value="#{row.r}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">hit</f:facet>
+                    <h:outputText value="#{row.hit ? 'hit' : 'miss'}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">attempt time</f:facet>
+                    <h:outputText value="#{row.attemptTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="#{timezoner.timezone}"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">execution time</f:facet>
+                    <h:outputText value="#{row.executionTime}"/>
+                </h:column>
+            </h:dataTable>
+        </div>
+
+        <h:link outcome="goToIndex" styleClass="h-link">
+            To the start page
+        </h:link>
+    </div>
+
+    <h:outputScript library="js" name="main_graphics.js"/>
+    <h:outputScript library="js" name="coomandlinks_clicker.js"/>
+    <script type="text/javascript">
+        provideInteractiveGraphics();
+        changeR(document.getElementById('form:rlink5'), 3);
+        setTimezone([{name: "timezone", value: Intl.DateTimeFormat().resolvedOptions().timeZone}]);
+        let x = JSON.parse('#{table.x}');
+        let y = JSON.parse('#{table.y}');
+        let r = JSON.parse('#{table.r}');
+        let hit = JSON.parse('#{table.hit}');
+        saveDots(x, y, r, hit);
+    </script>
+</h:body>
+</html>

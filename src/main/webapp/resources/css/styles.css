@@ -1,0 +1,254 @@
+@font-face {
+    font-family: 'press start 2p';
+    font-style: normal;
+    font-weight: 150;
+    src: local('Press Start 2P'), url(https://fonts.cdnfonts.com/s/15306/PressStart2P-Regular.woff) format('woff');
+}
+
+* {
+    font-family: "press start 2p", serif;
+    background: #000000;
+}
+
+.container {
+    display: grid;
+    horiz-align: center;
+    vertical-align: top;
+    width: 100%;
+}
+
+.header {
+    padding: 12px;
+    text-align: left;
+}
+
+h1, h2, h3 {
+    color: #FFF001;
+    font-size: 24px;
+    line-height: .5em;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 12px;
+}
+
+.button {
+    background-color: #FFF001;
+    color: #000000;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 15px;
+    margin: 5px;
+    transition: 0.5s;
+}
+
+.button:hover {
+    background-color: #000000;
+    color: #FFF001;
+    -webkit-box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+    -moz-box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+    box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+}
+
+.results-holder {
+    padding: 12px;
+    display: flex;
+    max-height: 400px;
+    overflow: auto;
+    vertical-align: top;
+}
+
+.results {
+    width: 95%;
+    padding: 10px;
+    margin: 0 auto auto;
+    border-collapse: collapse;
+}
+
+.results, .res-header {
+    text-align: center;
+    border: 3px solid #FFF001;
+    font-size: 16px;
+}
+
+.res-row {
+    color: #FFF001;
+    background-color: #000000;
+    line-height: 0;
+    height: 27px;
+    font-size: 16px;
+}
+
+.res-row td {
+    border: 3px solid #FFF001;
+}
+
+.res-header {
+    position: sticky;
+    top: 0;
+    background-color: #FFF001;
+    color: #000000;
+}
+
+.header {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.graph {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding: 10px;
+}
+
+#graphic {
+    transition: 0.5s;
+    cursor: crosshair;
+    z-index: 1;
+}
+
+#graphic:hover {
+    -webkit-box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+    -moz-box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+    box-shadow: 0 5px 30px 2px rgba(255, 240, 1, 0.2);
+}
+
+.form {
+    width: 60%;
+    border: 1px solid #FFF001;
+    padding: 12px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: grid;
+    vertical-align: top;
+    horiz-align: left;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 16px;
+    color: #FFF001;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+label:hover {
+    font-weight: bold;
+}
+
+.x-select {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    padding-left: 12px;
+}
+
+.y-text {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    padding-left: 12px;
+}
+
+.y {
+    font-size: 16px;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    color: #FFF001;
+    background-color: #000000;
+    transition: 0.5s;
+}
+
+#y:hover {
+    border: 1px solid #FFF001;
+}
+
+#y::placeholder {
+    color: #FFF001;
+}
+
+.r-select {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    padding-left: 12px;
+}
+
+.select {
+    font-size: 16px;
+    color: #FFF001;
+    padding: .6em 1.4em .5em .8em;
+    background-color: #000000;
+    transition: 0.5s;
+}
+
+.select:hover {
+    border: 1px solid #FFF001;
+    color: #FFF001;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+
+#submit-wrap {
+    grid-row-start: 4;
+    grid-row-end: 5;
+}
+
+#clear-wrap {
+    grid-row-start: 5;
+    grid-row-end: 6;
+}
+
+.results-holder {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+
+.warning {
+    font-size: 12px;
+    color: #FFF001;
+    padding-bottom: 5px;
+}
+
+.h-link {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #FFF001;
+    line-height: .5em;
+    font-size: 16px;
+}
+
+a:hover {
+    transition: 0.5s;
+    color: rgba(255, 240, 1, 0.2);
+}
+
+.r-checked {
+    color: green;
+    transition: 0.5s;
+}

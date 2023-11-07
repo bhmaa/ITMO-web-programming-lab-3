@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>Start Page</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <div class="header">
+        <h1>student: starikova daria</h1>
+        <h2>group: p3231</h2>
+        <h2>var: 3231210</h2>
+    </div>
+    <div class="clock-container" style="text-align: center;">
+        <h3 id="clock">
+            Here's the clock
+        </h3>
+        <h:link outcome="goToMain">
+            To the main page
+        </h:link>
+    </div>
+    <h:outputScript library="js" name="clock.js"/>
+</h:body>
+</html>
