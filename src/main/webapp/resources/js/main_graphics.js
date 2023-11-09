@@ -83,7 +83,7 @@ function saveDots(x, y, r, hit) {
 function provideInteractiveGraphics() {
     const canvas = document.getElementById("graphic");
     canvas.addEventListener("click", function (e) {
-        let offset = $(canvas).offset();
+        let offset = canvas.offset();
         let x = Math.round((e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft
             - Math.floor(offset.left) - center) / l);
         if (x > 5) {

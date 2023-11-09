@@ -129,13 +129,13 @@
     <h:outputScript library="js" name="coomandlinks_clicker.js"/>
     <script type="text/javascript">
         provideInteractiveGraphics();
-        changeR(document.getElementById('form:rlink5'), 3);
         setTimezone([{name: "timezone", value: Intl.DateTimeFormat().resolvedOptions().timeZone}]);
         let x = JSON.parse('#{table.x}');
         let y = JSON.parse('#{table.y}');
         let r = JSON.parse('#{table.r}');
         let hit = JSON.parse('#{table.hit}');
         saveDots(x, y, r, hit);
+        changeR(document.getElementById('form:rlink5'), 3);
     </script>
 </h:body>
 </html>
