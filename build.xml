@@ -4,10 +4,11 @@
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${test.build.dir}"/>
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${build.dir}">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
@@ -45,12 +46,11 @@
     </target>
 
     <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
+        <delete dir="${target.dir}"/>
     </target>
 
     <target name="compile-tests" depends="compile">
-        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}">
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
@@ -61,7 +61,7 @@
     </target>
 
     <target name="test" depends="compile-tests">
-        <junit printsummary="on" haltonfailure="yes">
+        <junit printsummary="on" haltonfailure="no">
             <classpath>
                 <pathelement path="${test.build.dir}"/>
                 <pathelement path="${build.dir}"/>

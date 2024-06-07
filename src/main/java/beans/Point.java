@@ -48,10 +48,12 @@ public class Point implements Serializable {
     public void check() {
         long start = System.nanoTime();
         long attemptTime = System.currentTimeMillis();
-        boolean hit = ((x >= -r) && (x <= 0) && (y >= 0) && (y <= r / 2))
+        hit = ((x >= -r) && (x <= 0) && (y >= 0) && (y <= r / 2))
                 || ((x <= 0) && (x >= -r / 2) && (y <= 0) && (y >= -r / 2 - x))
                 || ((x >= 0) && (y >= 0) && (x * x + y * y <= r * r / 4));
         long executionTime = System.nanoTime() - start;
-        table.addPoint(new Point(x, y, r, hit, attemptTime, executionTime));
+        if (table != null) {
+            table.addPoint(new Point(x, y, r, hit, attemptTime, executionTime));
+        }
     }
 }
