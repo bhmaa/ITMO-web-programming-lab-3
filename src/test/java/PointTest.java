@@ -1,18 +1,19 @@
 import beans.Point;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class PointTest {
+public class PointTest {
+
     private Point point;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         point = new Point();
     }
 
     @Test
-    void checkPointInsideFirstRegion() {
+    public void checkPointInsideFirstRegion() {
         point.setX(-1);
         point.setY(1);
         point.setR(2);
@@ -21,7 +22,7 @@ class PointTest {
     }
 
     @Test
-    void checkPointInsideSecondRegion() {
+    public void checkPointInsideSecondRegion() {
         point.setX(-1);
         point.setY(-1);
         point.setR(2);
@@ -30,7 +31,7 @@ class PointTest {
     }
 
     @Test
-    void checkPointInsideThirdRegion() {
+    public void checkPointInsideThirdRegion() {
         point.setX(1);
         point.setY(1);
         point.setR(2);
@@ -39,7 +40,7 @@ class PointTest {
     }
 
     @Test
-    void checkPointOutsideAllRegions() {
+    public void checkPointOutsideAllRegions() {
         point.setX(3);
         point.setY(3);
         point.setR(2);

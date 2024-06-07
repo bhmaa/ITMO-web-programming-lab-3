@@ -1,20 +1,39 @@
 <project name="ITMO-web-programming-lab-3" default="build" basedir=".">
     <property file="build.properties"/>
 
+    <path id="project.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
-        <mkdir dir="${test.build.dir}"/>
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" classpath="project.classpath">
+            <classpath refid="project.classpath"/>
         </javac>
+    </target>
+
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${test.build.dir}"/>
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false" classpathref="test.classpath"/>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <junit printsummary="true" haltonfailure="true" fork="true">
+            <classpath refid="test.classpath"/>
+            <batchtest todir="${test.build.dir}">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+        </junit>
     </target>
 
     <target name="build" depends="compile">
@@ -49,33 +68,14 @@
         <delete dir="${target.dir}"/>
     </target>
 
-    <target name="compile-tests" depends="compile">
-        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <pathelement path="${build.dir}"/>
-            </classpath>
-        </javac>
-    </target>
-
-    <target name="test" depends="compile-tests">
-        <junit printsummary="on" haltonfailure="no">
-            <classpath>
-                <pathelement path="${test.build.dir}"/>
-                <pathelement path="${build.dir}"/>
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
-            <batchtest fork="yes" todir="${test.build.dir}">
-                <fileset dir="${test.src.dir}">
-                    <include name="**/*Test.java"/>
-                </fileset>
-            </batchtest>
-        </junit>
-    </target>
+    <path id="test.classpath">
+        <path refid="project.classpath"/>
+        <pathelement location="${build.dir}"/>
+        <pathelement location="${test.build.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
 
     <target name="xml">
         <xmlvalidate lenient="true">
