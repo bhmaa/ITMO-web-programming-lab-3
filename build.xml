@@ -1,0 +1,116 @@
+<project name="ITMO-web-programming-lab-3" default="build" basedir=".">
+    <property file="build.properties"/>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile">
+        <copy todir="${build.dir}/webapp">
+            <fileset dir="${webapp.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}/webapp/WEB-INF/classes">
+            <fileset dir="${build.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}/webapp/WEB-INF/lib">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <war destfile="${dist.dir}/${war.file}" webxml="${webapp.dir}/WEB-INF/web.xml">
+            <manifest>
+                <attribute name="Manifest-Version" value="1.0"/>
+                <attribute name="Version" value="1.0-SNAPSHOT"/>
+            </manifest>
+            <fileset dir="${build.dir}/webapp">
+                <include name="**/*"/>
+                <exclude name="**/WEB-INF/web.xml"/>
+            </fileset>
+        </war>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile-tests" depends="compile">
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement path="${build.dir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile-tests">
+        <junit printsummary="on" haltonfailure="yes">
+            <classpath>
+                <pathelement path="${test.build.dir}"/>
+                <pathelement path="${build.dir}"/>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+            <batchtest fork="yes" todir="${test.build.dir}">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="xml">
+        <xmlvalidate lenient="true">
+            <fileset dir="${basedir}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </xmlvalidate>
+    </target>
+
+    <target name="team">
+        <exec executable="git" outputproperty="current.revision" failonerror="false">
+            <arg value="rev-parse"/>
+            <arg value="HEAD"/>
+        </exec>
+        <property name="revision1" value="${current.revision}~1"/>
+        <property name="revision2" value="${current.revision}~2"/>
+        <exec executable="git" failonerror="false">
+            <arg value="checkout"/>
+            <arg value="${revision1}"/>
+        </exec>
+        <antcall target="build">
+            <param name="war.file" value="${war.file}-${revision1}.war"/>
+        </antcall>
+        <exec executable="git" failonerror="false">
+            <arg value="checkout"/>
+            <arg value="${revision2}"/>
+        </exec>
+        <antcall target="build">
+            <param name="war.file" value="${war.file}-${revision2}.war"/>
+        </antcall>
+        <zip destfile="${dist.dir}/team-revisions.zip">
+            <fileset dir="${build.dir}">
+                <include name="${war.file}-${revision1}.war"/>
+                <include name="${war.file}-${revision2}.war"/>
+            </fileset>
+        </zip>
+    </target>
+</project>

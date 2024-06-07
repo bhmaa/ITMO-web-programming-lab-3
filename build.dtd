@@ -1,0 +1,123 @@
+<!ELEMENT project (property|path|target)*>
+        <!ATTLIST project
+                name CDATA #REQUIRED
+                default CDATA #REQUIRED
+                basedir CDATA #REQUIRED>
+
+        <!ELEMENT property (#PCDATA)>
+        <!ATTLIST property
+                name CDATA #IMPLIED
+                value CDATA #IMPLIED
+                file CDATA #IMPLIED>
+
+        <!ELEMENT path (EMPTY|fileset|pathelement|path)*>
+        <!ATTLIST path
+                refid CDATA #IMPLIED
+                id CDATA #IMPLIED>
+
+        <!ELEMENT fileset (include|exclude)*>
+        <!ATTLIST fileset
+                dir CDATA #REQUIRED>
+
+        <!ELEMENT include (#PCDATA)>
+        <!ATTLIST include
+                name CDATA #REQUIRED>
+
+        <!ELEMENT exclude (#PCDATA)>
+        <!ATTLIST exclude
+                name CDATA #REQUIRED>
+
+        <!ELEMENT target (delete|mkdir|javac|copy|war|xmlvalidate|junit|scp|native2ascii|replace|unwar)*>
+        <!ATTLIST target
+                depends CDATA #IMPLIED
+                name CDATA #REQUIRED>
+
+        <!ELEMENT delete (#PCDATA)>
+        <!ATTLIST delete
+                dir CDATA #REQUIRED>
+
+        <!ELEMENT mkdir (#PCDATA)>
+        <!ATTLIST mkdir
+                dir CDATA #REQUIRED>
+
+        <!ELEMENT javac (classpath, compilerarg)*>
+        <!ATTLIST javac
+                classpath CDATA #REQUIRED
+                srcdir CDATA #REQUIRED
+                destdir CDATA #REQUIRED
+                includeantruntime CDATA #REQUIRED>
+
+        <!ELEMENT classpath (path|pathelement)*>
+        <!ATTLIST classpath
+                refid CDATA #IMPLIED>
+
+        <!ELEMENT pathelement EMPTY>
+        <!ATTLIST pathelement
+                location CDATA #REQUIRED>
+
+        <!ELEMENT compilerarg (#PCDATA)>
+        <!ATTLIST compilerarg
+                line CDATA #REQUIRED>
+
+        <!ELEMENT copy (fileset)*>
+        <!ATTLIST copy
+                todir CDATA #REQUIRED>
+
+        <!ELEMENT war (fileset|manifest)*>
+        <!ATTLIST war
+                destfile CDATA #REQUIRED
+                webxml CDATA #REQUIRED>
+
+        <!ELEMENT manifest (attribute)*>
+        <!ELEMENT attribute (#PCDATA)>
+        <!ATTLIST attribute
+                name CDATA #REQUIRED
+                value CDATA #REQUIRED>
+
+        <!ELEMENT junit (classpath, formatter, batchtest)>
+        <!ATTLIST junit
+                printsummary CDATA #REQUIRED
+                haltonfailure CDATA #REQUIRED>
+
+        <!ELEMENT batchtest (fileset)>
+        <!ATTLIST batchtest
+                fork CDATA #REQUIRED
+                todir CDATA #REQUIRED>
+
+        <!ELEMENT formatter EMPTY>
+        <!ATTLIST formatter
+                type CDATA #REQUIRED>
+
+        <!ELEMENT xmlvalidate (fileset)>
+        <!ATTLIST xmlvalidate
+                lenient CDATA #IMPLIED>
+
+        <!ELEMENT native2ascii (include)>
+        <!ATTLIST native2ascii
+                encoding CDATA #REQUIRED
+                dest CDATA #REQUIRED
+                src CDATA #REQUIRED>
+
+        <!ELEMENT scp (fileset|classpath)*>
+        <!ATTLIST scp
+                todir CDATA #REQUIRED
+                trust CDATA #IMPLIED
+                keyfile CDATA #IMPLIED
+                passphrase CDATA #IMPLIED
+                sftp CDATA #IMPLIED>
+
+        <!ELEMENT unwar (patternset)>
+        <!ATTLIST unwar
+                src CDATA #REQUIRED
+                dest CDATA #REQUIRED>
+
+        <!ELEMENT patternset (include|exclude)*>
+
+        <!ELEMENT replace (include|replacefilter)*>
+        <!ATTLIST replace
+                dir CDATA #REQUIRED>
+
+        <!ELEMENT replacefilter EMPTY>
+        <!ATTLIST replacefilter
+                token CDATA #REQUIRED
+                value CDATA #REQUIRED>
