@@ -22,7 +22,7 @@ public class PointTest {
     }
 
     @Test
-    public void checkPointInsideSecondRegion() {
+    public void checkPointOutsideSecondRegion() {
         point.setX(-1);
         point.setY(-1);
         point.setR(2);
@@ -31,7 +31,7 @@ public class PointTest {
     }
 
     @Test
-    public void checkPointInsideThirdRegion() {
+    public void checkPointOutsideThirdRegion() {
         point.setX(1);
         point.setY(1);
         point.setR(2);

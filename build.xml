@@ -18,24 +18,6 @@
         </javac>
     </target>
 
-    <target name="test-compile" depends="compile">
-        <mkdir dir="${test.build.dir}"/>
-        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false" classpathref="test.classpath"/>
-    </target>
-
-    <target name="test" depends="test-compile">
-        <junit printsummary="true" haltonfailure="true" fork="true">
-            <classpath refid="test.classpath"/>
-            <batchtest todir="${test.build.dir}">
-                <fileset dir="${test.src.dir}">
-                    <include name="**/*Test.java"/>
-                </fileset>
-            </batchtest>
-            <formatter type="plain"/>
-            <formatter type="xml"/>
-        </junit>
-    </target>
-
     <target name="build" depends="compile">
         <copy todir="${build.dir}/webapp">
             <fileset dir="${webapp.dir}">
@@ -77,6 +59,24 @@
         </fileset>
     </path>
 
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${test.build.dir}"/>
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false"
+               classpathref="test.classpath"/>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <junit printsummary="true" haltonfailure="true" fork="true">
+            <classpath refid="test.classpath"/>
+            <batchtest todir="${test.build.dir}">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+            <formatter type="plain"/>
+        </junit>
+    </target>
+
     <target name="xml">
         <xmlvalidate lenient="true">
             <fileset dir="${basedir}">
@@ -86,11 +86,6 @@
     </target>
 
     <target name="team">
-        <exec executable="git" outputproperty="temp.branch" failonerror="false">
-            <arg value="rev-parse"/>
-            <arg value="--abbrev-ref"/>
-            <arg value="HEAD"/>
-        </exec>
         <exec executable="git" outputproperty="current.revision" failonerror="false">
             <arg value="rev-parse"/>
             <arg value="HEAD"/>
@@ -99,23 +94,21 @@
         <property name="revision2" value="${current.revision}~2"/>
         <exec executable="git" failonerror="false">
             <arg value="checkout"/>
-            <arg value="-b"/>
-            <arg value="temp-${current.revision}"/>
+            <arg value="${revision1}"/>
         </exec>
         <antcall target="build">
             <param name="war.file" value="${war.file}-${revision1}.war"/>
         </antcall>
+        <exec executable="git" failonerror="false">
+            <arg value="checkout"/>
+            <arg value="${revision2}"/>
+        </exec>
         <antcall target="build">
             <param name="war.file" value="${war.file}-${revision2}.war"/>
         </antcall>
         <exec executable="git" failonerror="false">
             <arg value="checkout"/>
-            <arg value="${temp.branch}"/>
-        </exec>
-        <exec executable="git" failonerror="false">
-            <arg value="branch"/>
-            <arg value="-D"/>
-            <arg value="temp-${current.revision}"/>
+            <arg value="${current.revision}"/>
         </exec>
         <zip destfile="${dist.dir}/team-revisions.zip">
             <fileset dir="${dist.dir}">
