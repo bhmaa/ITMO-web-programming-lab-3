@@ -93,19 +93,34 @@
         <property name="revision1" value="${current.revision}~1"/>
         <property name="revision2" value="${current.revision}~2"/>
         <exec executable="git" failonerror="false">
-            <arg value="checkout"/>
+            <arg value="branch"/>
+            <arg value="temp-revision1"/>
             <arg value="${revision1}"/>
+        </exec>
+        <exec executable="git" failonerror="false">
+            <arg value="checkout"/>
+            <arg value="temp-revision1"/>
         </exec>
         <antcall target="build">
             <param name="war.file" value="${war.file}-${revision1}.war"/>
         </antcall>
+
         <exec executable="git" failonerror="false">
             <arg value="checkout"/>
-            <arg value="${revision2}"/>
+            <arg value="temp-revision2"/>
         </exec>
         <antcall target="build">
             <param name="war.file" value="${war.file}-${revision2}.war"/>
         </antcall>
+        <exec executable="git" failonerror="false">
+            <arg value="checkout"/>
+            <arg value="${current.revision}"/>
+        </exec>
+        <exec executable="git" failonerror="false">
+            <arg value="branch"/>
+            <arg value="-D"/>
+            <arg value="temp-revision1"/>
+        </exec>
         <zip destfile="${dist.dir}/team-revisions.zip">
             <fileset dir="${dist.dir}">
                 <include name="*.war"/>
