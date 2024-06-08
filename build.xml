@@ -106,10 +106,6 @@
         <antcall target="build">
             <param name="war.file" value="${war.file}-${revision2}.war"/>
         </antcall>
-        <exec executable="git" failonerror="false">
-            <arg value="checkout"/>
-            <arg value="${current.revision}"/>
-        </exec>
         <zip destfile="${dist.dir}/team-revisions.zip">
             <fileset dir="${dist.dir}">
                 <include name="*.war"/>
